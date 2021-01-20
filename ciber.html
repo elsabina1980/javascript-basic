@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sprint 1 - Javascript</title>
+</head>
+
+<body>
+    <div id="calculatorResult">La <span>suma</span> de <span>2</span> y <span>2</span> es igual a <span>4</span></div>
+    <script>
+        // EXERCICI 3
+        const name = "Oscar";
+        const surname = "Casais";
+
+        // EXERCICI 4
+        const numA = 457
+        const numB = 666
+
+        // EXERCICI 5
+        const nota_examen = Math.round(Math.random() * 10);
+
+        // EXERCICI 6 
+        const replacementString = "Tinc un cotxe de color blau";
+
+        // EXERCICI 7
+        const list = ['taula', 'cadira', 'ordinador', 'libreta'];
+
+        // EXERCICI 8
+        const Operators = Object.freeze({
+            multiplication: Symbol('multiplication'),
+            sum: Symbol('sum'),
+            subtraction: Symbol('subtraction')
+        })
+        const OperatorsNameList = Object.freeze({
+            [Operators.multiplication]: 'multiplicación',
+            [Operators.sum]: 'suma',
+            [Operators.subtraction]: 'resta'
+        })
+
+        function infoExam(score) {
+            const text = score < 5 ? 'Ohh has suspendido el examen con un ' : 'Felicidades aprobaste el examen con un ';
+            window.alert(`${text} ${score}`);
+        }
+
+        function calculadora(operador, valor1, valor2) {
+            const validOperators = Object.keys(Operators);
+            const isOperatorValid = validOperators.some(op => Operators[op] === operador);
+            if (!isOperatorValid) {
+                const operatorsList = validOperators.join(', ');
+                throw new TypeError(`Only: ${operatorsList} ara available on 'calculadora'`);
+            }
+            const a = Number(valor1);
+            const b = Number(valor2);
+
+            return operador === Operators.sum ? valor1 + valor2 :
+                operador === Operators.subtraction ? valor1 - valor2 :
+                valor1 * valor2
+        }
+
+        function logList(list) {
+            if (!Array.isArray(list)) {
+                throw TypeError("You must proved an Array to 'logList function'")
+            }
+
+            list.forEach((element, index) => console.log(`L'objecte ${element} està a la posició ${index}`))
+        }
+
+        function printCalculation(operador, valor1, valor2) {
+            const resultEle = document.getElementById('calculatorResult');
+            if (!resultEle) {
+                throw ReferenceError("cannot find 'calculatorResult' elemement on the DOM");
+            }
+
+            const operationResult = calculadora(...arguments);
+            const argumentElementList = resultEle.getElementsByTagName('span');
+
+            for (let index = 0; index < argumentElementList.length; index++) {
+                innerHTML = index === 0 ? OperatorsNameList[operador] :
+                    !!arguments[index] ? arguments[index] :
+                    operationResult;
+                argumentElementList[index].innerHTML = innerHTML;
+            }
+        }
+
+        function replaceString(from, to, text) {
+            if (typeof text !== "string") {
+                throw TypeError("You must proved a string to 'replaceString function'");
+            }
+            const regExp = new RegExp(from, 'g');
+
+            return text.replace(regExp, to);
+        }
+
+
+        function sumNumbers() {
+            return Array.prototype.reduce.call(arguments, function(a, b) {
+                return a + b
+            });
+        }
+    </script>
+    <script>
+        (function() {
+            // EXERCICI 1
+            console.log("Hola mundo");
+
+            // EXERCICI 2
+            window.alert(`Me llamo ${name} ${surname}!`);
+
+            // EXERCICI 4
+            console.log(`La suma de ${numA} y ${numB} is ${sumNumbers(numA, numB)}`);
+
+            // EXERCICI 5
+            infoExam(nota_examen)
+
+            // EXERCICI 6
+            console.log(replaceString('blau', 'verd', replacementString))
+            console.log(replaceString('o', 'u', replacementString))
+
+            // EXERCICI 7
+            logList(list)
+
+            // EXERCICI 8
+            printCalculation(Operators.subtraction, 2, 2)
+        })();
+    </script>
+</body>
+
+</html>
